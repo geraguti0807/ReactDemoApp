@@ -1,6 +1,21 @@
 import React, { Component } from 'react';
 import Person from './Person/Person';
+import styled from 'styled-components';
 import './App.css';
+
+const StyledButton = styled.button`
+  background-color: ${props => props.alt ? 'green' : 'red'};
+  color: white;
+  font: inherit;
+  border: 1px solid black;
+  padding: 6px;
+  cursor: pointer;
+  
+  &:hover {
+    background-color: ${props => props.alt ? 'lightgreen' : 'salmon'};
+    color: black;
+  }
+`;
 
 class App extends Component {
   state = {
@@ -43,16 +58,21 @@ class App extends Component {
 
   render() {
     const style = {
-      backgroundColor: 'white',
+      backgroundColor: 'red',
+      color: 'white',
       font: 'inherit',
-      border: '3px solid red',
+      border: '1px solid black',
       padding: '6px',
-      cursor: 'pointer'
+      cursor: 'pointer',
+      ':hover': {
+        backgroundColor: 'salmon',
+        color: 'black'
+      }
     };
 
     let persons = null;
 
-    if (this.state.showPerson) {
+    if ( this.state.showPerson ) {
       persons = (
         <div>
           {this.state.persons.map((person, index) => {
@@ -65,17 +85,32 @@ class App extends Component {
           })}
         </div>
       );
+
+      /*
+      style.backgroundColor = 'green';
+      style[':hover'] = {
+        backgroundColor: 'lightgreen',
+        color: 'black'
+      }
+      */
+    }
+
+    const classes = [];
+
+    if (this.state.persons.length <= 2) {
+      classes.push('red');
+    }
+    if (this.state.persons.length <= 1) {
+      classes.push('bold');
     }
 
     return (
       <div className="App">
         <h1>Hi I'm a React App</h1>
-        <p>This is really working</p>
-        <button 
-          style={style}
-          onClick={this.toggleNameHandler}>
+        <p className={classes.join(' ')}>This is really working</p>
+        <StyledButton alt={this.state.showPerson} onClick={this.toggleNameHandler}>
             Toggle Persons
-        </button>
+        </StyledButton>
         {persons}
       </div>
     );
